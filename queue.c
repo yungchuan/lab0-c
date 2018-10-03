@@ -140,7 +140,7 @@ void q_reverse(queue_t *q)
 {
     if(!q || !(q->head) || !(q->head->next)) return;
     list_ele_t *pre_node, *nxt_node;
-    q_tail = q->head;
+    q->tail = q->head;
     nxt_node = q->head->next;
     do{
         pre_node = q->head;
