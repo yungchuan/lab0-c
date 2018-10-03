@@ -25,7 +25,8 @@
 queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
-    if(!q) return q;
+    if (!q)
+        return q;
     q->head = NULL;
     q->tail = NULL;
     q->size = 0;
@@ -35,9 +36,10 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    if(!q) return;
+    if (!q)
+        return;
     list_ele_t *node = q->head;
-    while(node){
+    while (node) {
         node = node->next;
         free(q->head);
         q->head = node;
@@ -55,15 +57,18 @@ void q_free(queue_t *q)
 bool q_insert_head(queue_t *q, char *s)
 {
     list_ele_t *newh;
-    if(!q) return false;
+    if (!q)
+        return false;
     newh = malloc(sizeof(list_ele_t));
-    if(!newh) return false;
+    if (!newh)
+        return false;
     newh->value = strdup(s);
-    if(newh->value == NULL){
+    if (newh->value == NULL) {
         free(newh);
         return false;
     }
-    if(q->head == NULL) q->tail = newh;
+    if (q->head == NULL)
+        q->tail = newh;
     newh->next = q->head;
     q->head = newh;
     q->size += 1;
@@ -81,11 +86,13 @@ bool q_insert_head(queue_t *q, char *s)
 bool q_insert_tail(queue_t *q, char *s)
 {
     list_ele_t *newt;
-    if(!q) return false;
+    if (!q)
+        return false;
     newt = malloc(sizeof(list_ele_t));
-    if(!newt) return false;
+    if (!newt)
+        return false;
     newt->value = strdup(s);
-    if(newt->value == NULL){
+    if (newt->value == NULL) {
         free(newt);
         return false;
     }
@@ -106,11 +113,13 @@ bool q_insert_tail(queue_t *q, char *s)
 */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    if(!q || !(q->head)) return false;
+    if (!q || !(q->head))
+        return false;
     list_ele_t *node = q->head;
     q->head = q->head->next;
-    if(!(q->head)) q->tail = NULL;
-    if(sp){
+    if (!(q->head))
+        q->tail = NULL;
+    if (sp) {
         strncpy(sp, node->value, bufsize - 1);
         sp[bufsize - 1] = '\0';
     }
@@ -125,7 +134,8 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
  */
 int q_size(queue_t *q)
 {
-    if(!q) return 0;
+    if (!q)
+        return 0;
     return q->size;
 }
 
@@ -138,15 +148,16 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    if(!q || !(q->head) || !(q->head->next)) return;
+    if (!q || !(q->head) || !(q->head->next))
+        return;
     list_ele_t *pre_node, *nxt_node;
     q->tail = q->head;
     nxt_node = q->head->next;
-    do{
+    do {
         pre_node = q->head;
         q->head = nxt_node;
         nxt_node = q->head->next;
         q->head->next = pre_node;
-    }while(!nxt_node);
+    } while (nxt_node);
     q->tail->next = NULL;
 }
