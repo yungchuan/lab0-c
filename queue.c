@@ -41,6 +41,7 @@ void q_free(queue_t *q)
     list_ele_t *node = q->head;
     while (node) {
         node = node->next;
+        free(q->head->value);
         free(q->head);
         q->head = node;
     }
@@ -62,11 +63,12 @@ bool q_insert_head(queue_t *q, char *s)
     newh = malloc(sizeof(list_ele_t));
     if (!newh)
         return false;
-    newh->value = strdup(s);
+    newh->value = malloc((strlen(s)+1)*sizeof(char));
     if (newh->value == NULL) {
         free(newh);
         return false;
     }
+    strcpy(newh->value, s);
     if (q->head == NULL)
         q->tail = newh;
     newh->next = q->head;
@@ -91,11 +93,12 @@ bool q_insert_tail(queue_t *q, char *s)
     newt = malloc(sizeof(list_ele_t));
     if (!newt)
         return false;
-    newt->value = strdup(s);
+    newt->value = malloc((strlen(s)+1)*sizeof(char));
     if (newt->value == NULL) {
         free(newt);
         return false;
     }
+    strcpy(newt->value, s);
     q->tail->next = newt;
     q->tail = newt;
     newt->next = NULL;
@@ -123,6 +126,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
         strncpy(sp, node->value, bufsize - 1);
         sp[bufsize - 1] = '\0';
     }
+    free(node->value);
     free(node);
     q->size -= 1;
     return true;
